@@ -45,7 +45,7 @@ namespace MovieBookingApp.Controllers
         {
             var existingStudent = _StudentService.Get(id);
             if (existingStudent == null) return NotFound($"Student with ID '${id}' not found!");
-            _StudentService.Update(id, existingStudent);
+            _StudentService.Update(id, student);
             return CreatedAtAction(nameof(Get), new { id = existingStudent.Id }, student);
         }
 
