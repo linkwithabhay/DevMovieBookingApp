@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDBSetup.Models;
 using MongoDBSetup.Services;
 
@@ -6,6 +7,7 @@ namespace MovieBookingApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class StudentsController : ControllerBase
     {
         private readonly IStudentService _StudentService;
@@ -17,6 +19,7 @@ namespace MovieBookingApp.Controllers
 
         // GET: api/<StudentsController>
         [HttpGet]
+        [Authorize(Roles = "User")]
         public ActionResult<List<Student>> Get()
         {
             return Ok(_StudentService.Get());
