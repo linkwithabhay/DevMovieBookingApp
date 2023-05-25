@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.VisualBasic;
 using MongoDBSetup.Configurations;
 using MongoDBSetup.Models;
-using MongoDBSetup.Services;
 using MongoDBSetup.ViewModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -18,18 +16,15 @@ namespace MongoDBSetup.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
-        private readonly SignInManager<AppUser> _signInManager;
         private readonly IJwtConfig _jwtConfig;
 
         public AccountController(
             UserManager<AppUser> userManager,
             RoleManager<AppRole> roleManager,
-            SignInManager<AppUser> signInManager,
             IJwtConfig jwtConfig)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _signInManager = signInManager;
             _jwtConfig = jwtConfig;
         }
 

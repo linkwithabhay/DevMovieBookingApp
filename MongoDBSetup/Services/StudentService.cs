@@ -1,41 +1,41 @@
 ﻿using MongoDB.Driver;
+using MongoDBSetup.Data;
 using MongoDBSetup.Models;
 
 namespace MongoDBSetup.Services
 {
     public class StudentService : IStudentService
     {
-        private readonly IMongoCollection<Student> _Students;
+        private readonly IDbContext _dbContext;
 
-        public StudentService(IMongoDBSettings settings, IMongoClient mongoClient)
+        public StudentService(IDbContext dbContext)
         {
-            var database = mongoClient.GetDatabase(settings.DatabaseName);
-            _Students = database.GetCollection<Student>(settings.CollectionName);
+            _dbContext = dbContext;
         }
         public Student Create(Student student)
         {
-            _Students.InsertOne(student);
+            _dbContext.Students.InsertOne(student);
             return student;
         }
 
         public List<Student> Get()
         {
-            return _Students.Find(student => true).ToList();
+            return _dbContext.Students.Find(student => true).ToList();
         }
 
         public Student Get(string id)
         {
-            return _Students.Find(student => student.Id == id).FirstOrDefault();
+            return _dbContext.Students.Find(student => student.Id == id).FirstOrDefault();
         }
 
         public void Update(string id, Student student)
         {
-            _Students.ReplaceOne(s => s.Id == id, student);
+            _dbContext.Students.ReplaceOne(s => s.Id == id, student);
         }
 
         public void Delete(string id)
         {
-            _Students.DeleteOne(student => student.Id == id);
+            _dbContext.Students.DeleteOne(student => student.Id == id);
         }
     }
 }

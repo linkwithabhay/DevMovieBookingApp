@@ -1,18 +1,13 @@
 using AspNetCore.Identity.Mongo;
-using AspNetCore.Identity.Mongo.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Microsoft.VisualBasic;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Core.Configuration;
 using MongoDBSetup.Configurations;
+using MongoDBSetup.Data;
 using MongoDBSetup.Models;
 using MongoDBSetup.Services;
-using System.Security.Principal;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +21,8 @@ builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection(nameof(Jw
 builder.Services.AddSingleton<IJwtConfig>(config => config.GetRequiredService<IOptions<JwtConfig>>().Value);
 
 builder.Services.AddSingleton<IMongoClient>(config => new MongoClient(builder.Configuration.GetValue<string>("MongoDBSettings:ConnectionString")));
+
+builder.Services.AddSingleton<IDbContext, DbContext>();
 
 builder.Services.AddScoped<IStudentService, StudentService>();
 
@@ -99,6 +96,8 @@ builder.Services.AddSwaggerGen(s =>
 
 
 var app = builder.Build();
+
+DatabaseSeedData.Seed(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
