@@ -14,13 +14,13 @@ namespace MongoDBSetup.Data
             SeedStudents(scope.ServiceProvider.GetRequiredService<IStudentService>());
             SeedAdmin(scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>());
         }
-        public static void SeedRole(RoleManager<AppRole> roleManager)
+        private static void SeedRole(RoleManager<AppRole> roleManager)
         {
             if (roleManager.Roles.Any()) return;
             roleManager.CreateAsync(new AppRole { Name = "Admin" }).GetAwaiter().GetResult();
         }
 
-        public static void SeedAdmin(UserManager<AppUser> userManager)
+        private static void SeedAdmin(UserManager<AppUser> userManager)
         {
             if (userManager.Users.Any()) return;
             var adminUser = new AppUser
@@ -32,7 +32,7 @@ namespace MongoDBSetup.Data
             userManager.AddToRoleAsync(adminUser, "Admin").GetAwaiter().GetResult();
         }
 
-        public static void SeedStudents(IStudentService repository)
+        private static void SeedStudents(IStudentService repository)
         {
             if (repository.Get().Any()) return;
             var students = new List<Student>
