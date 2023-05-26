@@ -7,7 +7,6 @@ namespace MongoDBSetup.Services
     public class StudentService : IStudentService
     {
         private readonly IDbContext _dbContext;
-
         public StudentService(IDbContext dbContext)
         {
             _dbContext = dbContext;
