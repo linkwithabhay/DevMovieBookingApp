@@ -5,6 +5,10 @@ VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoDBSetup", "MongoDBSetup\MongoDBSetup.csproj", "{7407175D-BCEE-4919-AAE4-44D204C2E0DC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KafkaConsumer", "KafkaConsumer\KafkaConsumer.csproj", "{09EE32FD-E81B-4AF4-AAC5-37E9F0BF2440}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{840D9FC6-83B0-4CE1-9A7D-5D31AA1A17AC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7407175D-BCEE-4919-AAE4-44D204C2E0DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7407175D-BCEE-4919-AAE4-44D204C2E0DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7407175D-BCEE-4919-AAE4-44D204C2E0DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09EE32FD-E81B-4AF4-AAC5-37E9F0BF2440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09EE32FD-E81B-4AF4-AAC5-37E9F0BF2440}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09EE32FD-E81B-4AF4-AAC5-37E9F0BF2440}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09EE32FD-E81B-4AF4-AAC5-37E9F0BF2440}.Release|Any CPU.Build.0 = Release|Any CPU
+		{840D9FC6-83B0-4CE1-9A7D-5D31AA1A17AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{840D9FC6-83B0-4CE1-9A7D-5D31AA1A17AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{840D9FC6-83B0-4CE1-9A7D-5D31AA1A17AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{840D9FC6-83B0-4CE1-9A7D-5D31AA1A17AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

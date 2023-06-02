@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using MongoDBSetup.Data;
+using MongoDBSetup.Kafka;
 using MongoDBSetup.Models;
 
 namespace MongoDBSetup.Services

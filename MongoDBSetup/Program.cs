@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using MongoDBSetup.Configurations;
 using MongoDBSetup.Data;
+using MongoDBSetup.Kafka;
 using MongoDBSetup.Models;
 using MongoDBSetup.Services;
 using System.Text;
@@ -25,6 +26,8 @@ builder.Services.AddSingleton<IMongoClient>(config => new MongoClient(builder.Co
 builder.Services.AddSingleton<IDbContext, DbContext>();
 
 builder.Services.AddScoped<IStudentService, StudentService>();
+
+builder.Services.AddScoped<IKafkaProducerService, KafkaProducerService>();
 
 builder.Services
     .AddIdentityMongoDbProvider<AppUser, AppRole>(config =>

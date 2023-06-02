@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MongoDBSetup.Configurations;
+using MongoDBSetup.Kafka;
 using MongoDBSetup.Models;
 using MongoDBSetup.ViewModels;
 using System.IdentityModel.Tokens.Jwt;
