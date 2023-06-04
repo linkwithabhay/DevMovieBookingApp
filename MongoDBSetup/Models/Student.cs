@@ -8,13 +8,14 @@ namespace MongoDBSetup.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = String.Empty;
+        public string Id { get; set; } = string.Empty;
 
         [BsonElement("name")]
-        public string Name { get; set; } = String.Empty;
+        public string Name { get; set; } = string.Empty;
 
         [BsonElement("gender")]
-        public string Gender { get; set; } = String.Empty;
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Gender { get; set; } = string.Empty;
 
         [BsonElement("age")]
         public int Age { get; set; }
@@ -23,6 +24,6 @@ namespace MongoDBSetup.Models
         public bool IsGraduated { get; set; }
 
         [BsonElement("courses")]
-        public string[]? Courses { get; set; }
+        public string[] Courses { get; set; } = Array.Empty<string>();
     }
 }

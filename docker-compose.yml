@@ -51,6 +51,8 @@ services:
     build:
       context: .
       dockerfile: MongoDBSetup/Dockerfile
+    environment:
+      MongoDBSettings__ConnectionString: "mongodb://mongodb:27017/"
     depends_on:
       - broker
       - mongodb

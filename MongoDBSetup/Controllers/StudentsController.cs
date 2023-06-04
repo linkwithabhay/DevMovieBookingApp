@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using MongoDBSetup.Kafka;
 using MongoDBSetup.Models;
 using MongoDBSetup.Services;
+using MongoDBSetup.ViewModels;
 
 namespace MovieBookingApp.Controllers
 {
@@ -24,7 +26,6 @@ namespace MovieBookingApp.Controllers
 
         // GET: api/<StudentsController>
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
         public ActionResult<List<Student>> Get()
         {
             var students = _StudentService.Get();
@@ -34,7 +35,7 @@ namespace MovieBookingApp.Controllers
 
         // GET api/<StudentsController>/5
         [HttpGet("{id}")]
-        public ActionResult<Student> Get(string id)
+        public ActionResult<StudentViewModel> Get(string id)
         {
             var student =  _StudentService.Get(id);
             if (student == null)
@@ -48,7 +49,7 @@ namespace MovieBookingApp.Controllers
 
         // POST api/<StudentsController>
         [HttpPost]
-        public ActionResult<Student> Post([FromBody] Student student)
+        public ActionResult<StudentViewModel> Post([FromBody] Student student)
         {
             _StudentService.Create(student);
             _kafkaProducer.SendToTopicAsync(TOPIC2, $"New Student['{student.Id}'] inserted.").GetAwaiter().GetResult();
@@ -57,6 +58,7 @@ namespace MovieBookingApp.Controllers
 
         // PUT api/<StudentsController>/5
         [HttpPut("{id}")]
+        //[Authorize(Roles = "Admin")]
         public ActionResult Put(string id, [FromBody] Student student)
         {
             var existingStudent = _StudentService.Get(id);

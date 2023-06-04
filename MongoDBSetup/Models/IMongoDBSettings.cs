@@ -2,7 +2,8 @@
 {
     public interface IMongoDBSettings
     {
-        string CollectionName { get; set; }
+        string StudentCollection { get; set; }
+        string GenderCollection { get; set; }
         string DatabaseName { get; set; }
         string ConnectionString { get; set; }
     }
