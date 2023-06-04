@@ -53,6 +53,7 @@ services:
       dockerfile: MongoDBSetup/Dockerfile
     environment:
       MongoDBSettings__ConnectionString: "mongodb://mongodb:27017/"
+      KafkaConfig__BootstrapServers: "broker:29092"
     depends_on:
       - broker
       - mongodb

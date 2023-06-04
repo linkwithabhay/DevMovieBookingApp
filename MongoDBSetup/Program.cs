@@ -21,6 +21,9 @@ builder.Services.AddSingleton<IMongoDBSettings>(config => config.GetRequiredServ
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection(nameof(JwtConfig)));
 builder.Services.AddSingleton<IJwtConfig>(config => config.GetRequiredService<IOptions<JwtConfig>>().Value);
 
+builder.Services.Configure<KafkaConfig>(builder.Configuration.GetSection(nameof(KafkaConfig)));
+builder.Services.AddSingleton<IKafkaConfig>(config => config.GetRequiredService<IOptions<KafkaConfig>>().Value);
+
 builder.Services.AddSingleton<IMongoClient>(config => new MongoClient(builder.Configuration.GetValue<string>("MongoDBSettings:ConnectionString")));
 
 builder.Services.AddSingleton<IDbContext, DbContext>();

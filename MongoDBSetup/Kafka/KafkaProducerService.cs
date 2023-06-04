@@ -1,22 +1,29 @@
 ﻿using Confluent.Kafka;
+using MongoDBSetup.Configurations;
 
 namespace MongoDBSetup.Kafka
 {
     public class KafkaProducerService : IKafkaProducerService
     {
         private readonly ILogger<KafkaProducerService> _logger;
-        private readonly IProducer<Null, string> _producer;
+        private readonly IProducer<Null, string>? _producer;
 
-        public KafkaProducerService(ILogger<KafkaProducerService> logger) {
+        public KafkaProducerService(ILogger<KafkaProducerService> logger, IKafkaConfig kafkaConfig) {
             _logger = logger;
-            _producer = new ProducerBuilder<Null, string>(new ProducerConfig { BootstrapServers = "broker:29092" }).Build();
+            if (!string.IsNullOrWhiteSpace(kafkaConfig.BootstrapServers))
+            {
+                _producer = new ProducerBuilder<Null, string>(new ProducerConfig { BootstrapServers = kafkaConfig.BootstrapServers }).Build();
+            }
         }
 
         public async Task SendToTopicAsync(string topic, string message)
         {
             try
             {
-                await _producer.ProduceAsync(topic, new Message<Null, string> { Value = message });
+                if (_producer != null)
+                {
+                    await _producer.ProduceAsync(topic, new Message<Null, string> { Value = message });
+                }
                 var log = "KAFKA_PRODUCER - " + $"Topic = '{topic}', Message = '{message}'";
                 _logger.LogInformation(log);
             }
