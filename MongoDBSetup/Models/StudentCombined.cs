@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace MongoDBSetup.Models
 {
     [BsonIgnoreExtraElements]
-    public class Student
+    public class StudentCombined
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -14,15 +14,15 @@ namespace MongoDBSetup.Models
         public string Name { get; set; } = string.Empty;
 
         [BsonElement("gender")]
-        public string Gender { get; set; } = string.Empty;
+        public Gender Gender { get; set; } = new();
 
         [BsonElement("age")]
         public int Age { get; set; }
-        
+
         [BsonElement("graduated")]
         public bool IsGraduated { get; set; }
 
         [BsonElement("courses")]
-        public string[] Courses { get; set; } = Array.Empty<string>();
+        public Course[] Courses { get; set; } = Array.Empty<Course>();
     }
 }

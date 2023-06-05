@@ -7,5 +7,6 @@ namespace MongoDBSetup.Data
     {
         IMongoCollection<Student> Students { get; }
         IMongoCollection<Gender> Genders { get; }
+        IMongoCollection<Course> Courses { get; }
     }
 }

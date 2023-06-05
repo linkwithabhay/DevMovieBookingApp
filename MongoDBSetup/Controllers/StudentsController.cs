@@ -35,7 +35,7 @@ namespace MovieBookingApp.Controllers
 
         // GET api/<StudentsController>/5
         [HttpGet("{id}")]
-        public ActionResult<StudentViewModel> Get(string id)
+        public ActionResult<StudentCombined> Get(string id)
         {
             var student =  _StudentService.Get(id);
             if (student == null)
@@ -49,7 +49,7 @@ namespace MovieBookingApp.Controllers
 
         // POST api/<StudentsController>
         [HttpPost]
-        public ActionResult<StudentViewModel> Post([FromBody] Student student)
+        public ActionResult<StudentCombined> Post([FromBody] Student student)
         {
             _StudentService.Create(student);
             _kafkaProducer.SendToTopicAsync(TOPIC2, $"New Student['{student.Id}'] inserted.").GetAwaiter().GetResult();

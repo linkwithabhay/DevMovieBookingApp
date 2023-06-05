@@ -12,11 +12,46 @@ namespace MongoDBSetup.Services
     {
         private readonly IDbContext _dbContext;
         private readonly IMongoDBSettings _dbSettings;
+        private readonly BsonDocument _ForeignKeyStringToObjectIdPipeline = new("$addFields", new BsonDocument
+        {
+            { "gender", new BsonDocument("$toObjectId", "$gender") },
+            { "courses", new BsonDocument("$map",
+                new BsonDocument
+                {
+                    { "input", "$courses" },
+                    { "as", "course" },
+                    { "in", new BsonDocument("$toObjectId", "$$course") }
+                })
+            }
+        });
+        private readonly BsonDocument _UnwindGendersPipeline = new("$unwind", new BsonDocument
+        {
+            { "path", "$gender" },
+            { "preserveNullAndEmptyArrays", true }
+        });
+        private readonly BsonDocument _LookupGenderPipeline;
+        private readonly BsonDocument _LookupCoursesPipeline;
+        private BsonDocument _MatchPipeline(string key, BsonValue value) => new("$match", new BsonDocument(key, value));
+        private BsonDocument _MatchByIdPipeline(string id) => _MatchPipeline("_id", new ObjectId(id));
 
         public StudentService(IDbContext dbContext, IMongoDBSettings dBSettings)
         {
             _dbContext = dbContext;
             _dbSettings = dBSettings;
+            _LookupGenderPipeline = new BsonDocument("$lookup", new BsonDocument
+            {
+                { "from", _dbSettings.GenderCollection },
+                { "localField", "gender" },
+                { "foreignField", "_id" },
+                { "as", "gender" }
+            });
+            _LookupCoursesPipeline = new BsonDocument("$lookup", new BsonDocument
+            {
+                { "from", _dbSettings.CourseCollection },
+                { "localField", "courses" },
+                { "foreignField", "_id" },
+                { "as", "courses" }
+            });
         }
         public Student Create(Student student)
         {
@@ -24,23 +59,30 @@ namespace MongoDBSetup.Services
             return student;
         }
 
-        public List<StudentViewModel> Get()
+        public List<StudentCombined> Get()
         {
-            //return _dbContext.Students.Find(_ => true).ToList();
-            var result = _dbContext.Students.Aggregate()
-                .Lookup<Student, Gender, StudentViewModel>(_dbContext.Genders, x => x.Gender, x => x.Id, x => x.Genders)
-                .ToList();
+            var pipelines = PipelineDefinition<Student, StudentCombined>.Create(new BsonDocument[]
+            {
+                _ForeignKeyStringToObjectIdPipeline,
+                _LookupGenderPipeline,
+                _LookupCoursesPipeline,
+                _UnwindGendersPipeline
+            });
+            var result = _dbContext.Students.Aggregate(pipelines).ToList();
             return result;
         }
 
-        public StudentViewModel Get(string id)
+        public StudentCombined Get(string id)
         {
-            //return _dbContext.Students.Find(x => x.Id.Equals(id)).FirstOrDefault();
-            var result = _dbContext.Students
-                .Aggregate()
-                .Match(x => x.Id.Equals(id))
-                .Lookup<Student, Gender, StudentViewModel>(_dbContext.Genders, x => x.Gender, x => x.Id, x => x.Genders)
-                .FirstOrDefault();
+            var pipelines = PipelineDefinition<Student, StudentCombined>.Create(new BsonDocument[]
+            {
+                _MatchByIdPipeline(id),
+                _ForeignKeyStringToObjectIdPipeline,
+                _LookupGenderPipeline,
+                _LookupCoursesPipeline,
+                _UnwindGendersPipeline
+            });
+            var result = _dbContext.Students.Aggregate(pipelines).FirstOrDefault();
             return result;
         }
 

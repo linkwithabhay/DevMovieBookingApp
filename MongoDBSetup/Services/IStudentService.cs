@@ -6,8 +6,8 @@ namespace MongoDBSetup.Services
 {
     public interface IStudentService
     {
-        List<StudentViewModel> Get();
-        StudentViewModel Get(string id);
+        List<StudentCombined> Get();
+        StudentCombined Get(string id);
         Student Create(Student student);
         void Update(string id, Student student);
         void Delete(string id);
